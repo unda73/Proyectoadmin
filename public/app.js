@@ -1,300 +1,248 @@
 // Encuentra los botones que tienen el atributo data-pantalla.
-// El botón Salir no tiene ese atributo y queda fuera de esta lista.
 const botonesMenu = document.querySelectorAll("[data-pantalla]");
 
-// Encuentra todas las secciones que funcionan como pantallas.
+// Encuentra las secciones que representan las pantallas.
 const pantallas = document.querySelectorAll(".pantalla");
 
-// Recorre los botones para asignarles su acción.
-botonesMenu.forEach(function (boton) {
+// Guarda la carga del módulo para no cargarlo varias veces.
+let cargaIngresos = null;
 
-    // Detecta cuándo se pulsa este botón.
-    boton.addEventListener("click", function () {
+// Guarda los ingresos confirmados de esta sesión en centavos.
+let ingresosConfirmados = 0;
 
-        // Lee el identificador de la pantalla que debe mostrar.
-        const pantallaDestino = boton.dataset.pantalla;
+// Por ahora Gastos no tiene formulario, por eso permanece en cero.
+let gastosConfirmados = 0;
 
-        // Recorre todas las pantallas.
-        pantallas.forEach(function (pantalla) {
+// Indica si estamos cerrando el sistema.
+let cerrandoSistema = false;
 
-            // Oculta las que no coinciden y muestra la seleccionada.
-            pantalla.hidden = pantalla.id !== pantallaDestino;
-
-        });
-
-        // Actualiza el aspecto de todos los botones del menú.
-        botonesMenu.forEach(function (opcion) {
-
-            // Comprueba si esta opción es el botón que pulsamos.
-            const seleccionada = opcion === boton;
-
-            // Agrega o quita la clase activo según corresponda.
-            opcion.classList.toggle("activo", seleccionada);
-
-            // Identifica la opción actual para tecnologías de asistencia.
-            if (seleccionada) {
-                opcion.setAttribute("aria-current", "page");
-            } else {
-                opcion.removeAttribute("aria-current");
-            }
-
-        });
-
-    });
-
+// Prepara el formato de moneda mexicana.
+const moneda = new Intl.NumberFormat("es-MX", {
+    style: "currency",
+    currency: "MXN"
 });
 
+// Actualiza las tres tarjetas de la pantalla Inicio.
+function actualizarInicio() {
+
+    // Convierte centavos a pesos para mostrar el dinero.
+    document.getElementById("resumen-ingresos").textContent =
+        moneda.format(ingresosConfirmados / 100);
+
+    document.getElementById("resumen-gastos").textContent =
+        moneda.format(gastosConfirmados / 100);
+
+    // Calcula el saldo disponible.
+    const saldo = ingresosConfirmados - gastosConfirmados;
+
+    document.getElementById("resumen-saldo").textContent =
+        moneda.format(saldo / 100);
+}
+
+// Busca los archivos del módulo y prepara su funcionamiento.
+async function prepararIngresos() {
+
+    // Encuentra el espacio vacío que dejamos en index.html.
+    const contenedor = document.getElementById("pantalla-ingresos");
+
+    // Muestra un mensaje mientras se obtiene el archivo.
+    contenedor.textContent = "Cargando Ingresos…";
+
+    // Solicita el HTML de Ingresos.
+    // La ruta es relativa a la dirección de index.html.
+    const respuesta = await fetch("./modulos/ingresos/ingresos.html");
+
+    // Comprueba si el servidor encontró el archivo.
+    if (!respuesta.ok) {
+        throw new Error(
+            `No se pudo cargar ingresos.html. Código: ${respuesta.status}`
+        );
+    }
+
+    // Lee el contenido del archivo como texto.
+    const html = await respuesta.text();
+
+    // Importa el archivo que contiene las funciones de Ingresos.
+    const modulo = await import("./modulos/ingresos/ingresos.js");
+
+    // Coloca nuestra plantilla HTML dentro de la sección.
+    // Este contenido proviene de nuestro propio archivo.
+    contenedor.innerHTML = html;
+
+    // Inicia los formularios y botones del módulo.
+    // El módulo nos avisará cuando cambie el total registrado.
+    modulo.iniciarIngresos(contenedor, function (totalCentavos) {
+
+        ingresosConfirmados = totalCentavos;
+
+        // Refleja el nuevo total en la pantalla Inicio.
+        actualizarInicio();
+    });
+}
+
+// Evita repetir la carga cuando cambiamos de pantalla.
+async function cargarIngresos() {
+
+    // Si ya existe una carga, reutiliza su resultado.
+    if (cargaIngresos) {
+        return cargaIngresos;
+    }
+
+    // Guarda la operación de carga.
+    cargaIngresos = prepararIngresos();
+
+    try {
+
+        // Espera a que termine de prepararse el módulo.
+        await cargaIngresos;
+
+    } catch (error) {
+
+        // Permite volver a intentarlo si ocurrió un error.
+        cargaIngresos = null;
+
+        // Entrega el error al código que llamó esta función.
+        throw error;
+    }
+}
+
+// Asigna una acción a cada botón del menú.
+botonesMenu.forEach(function (boton) {
+
+    boton.addEventListener("click", async function () {
+
+        // Evita navegar mientras se está cerrando el sistema.
+        if (cerrandoSistema) {
+            return;
+        }
+
+        // Lee el ID de la pantalla que corresponde al botón.
+        const idPantalla = boton.dataset.pantalla;
+
+        // Comprueba que la pantalla exista.
+        if (!document.getElementById(idPantalla)) {
+            console.error("No existe la pantalla:", idPantalla);
+            return;
+        }
+
+        // Muestra la pantalla seleccionada y oculta las demás.
+        pantallas.forEach(function (pantalla) {
+            pantalla.hidden = pantalla.id !== idPantalla;
+        });
+
+        // Actualiza el aspecto de los botones.
+        botonesMenu.forEach(function (otroBoton) {
+
+            const seleccionado = otroBoton === boton;
+
+            otroBoton.classList.toggle("activo", seleccionado);
+
+            // Indica cuál es el botón seleccionado.
+            if (seleccionado) {
+                otroBoton.setAttribute("aria-current", "page");
+            } else {
+                otroBoton.removeAttribute("aria-current");
+            }
+        });
+
+        // Carga el módulo cuando se selecciona Ingresos.
+        if (idPantalla === "pantalla-ingresos") {
+
+            try {
+
+                await cargarIngresos();
+
+            } catch (error) {
+
+                // Muestra una explicación dentro de la pantalla.
+                document.getElementById("pantalla-ingresos").textContent =
+                    "No se pudo cargar Ingresos. Revisa que existan " +
+                    "ingresos.html e ingresos.js en modulos/ingresos. " +
+                    "Pulsa Ingresos para intentarlo otra vez.";
+
+                // Guarda el detalle en la consola del navegador.
+                console.error("Error al cargar Ingresos:", error);
+            }
+        }
+    });
+});
 
 // Encuentra el botón Salir del menú.
 const botonSalir = document.getElementById("boton-salir");
 
-// Ejecuta esta función cuando se presiona el botón.
+// Atiende el clic en Salir del sistema.
 botonSalir.addEventListener("click", async function () {
 
-    // Pregunta antes de detener el sistema.
-    const deseaSalir = window.confirm(
-        "¿Quieres detener el sistema? Dejará de funcionar en todas sus pestañas."
-    );
-
-    // Si el usuario cancela, termina esta función.
-    if (!deseaSalir) {
+    if (cerrandoSistema) {
         return;
     }
 
-    // Evita pulsar el botón varias veces mientras se procesa la solicitud.
+    // Advierte que los registros todavía son temporales.
+    const confirmar = window.confirm(
+        "¿Quieres salir del sistema? Los registros de esta sesión se perderán."
+    );
+
+    if (!confirmar) {
+        return;
+    }
+
+    // Evita repetir la solicitud mientras esperamos.
+    cerrandoSistema = true;
     botonSalir.disabled = true;
 
     try {
 
-        // Envía al servidor una solicitud para detenerse.
+        // Solicita el cierre a la ruta que ya tiene tu servidor.
         const respuesta = await fetch("/api/salir", {
             method: "POST",
-
-            // Esta cabecera identifica una solicitud de nuestra interfaz.
             headers: {
                 "X-Sistema-Local": "salir"
             }
         });
 
-        // Si el servidor rechazó la solicitud, genera un error.
         if (!respuesta.ok) {
-            throw new Error("El servidor no aceptó la solicitud.");
+            throw new Error("El servidor rechazó la solicitud de cierre.");
         }
 
-        // Espera a recibir la respuesta completa.
-        await respuesta.json();
+        // Comprueba que el servidor aceptó detenerse.
+        const datos = await respuesta.json();
 
-        //intentamos cerrar unicamente esta pestaña
-        window.close()
+        if (!datos.aceptado) {
+            throw new Error("El servidor no confirmó el cierre.");
+        }
 
-        // Crea un título para la pantalla de salida.
-        const tituloSalida = document.createElement("h2");
-
-        // Define el texto del título.
-        tituloSalida.textContent = "Cierre del sistema solicitado";
-
-        // Crea un mensaje para el usuario.
-        const textoSalida = document.createElement("p");
-
-        // Explica cómo volver a utilizar el sistema.
-        textoSalida.textContent =
-            "Ya puedes cerrar esta pestaña. Para volver a entrar, pulsa el icono Sistema Administrativo.";
-
-        // Encuentra el área principal.
-        const contenidoPrincipal = document.querySelector("main");
-
-        // Sustituye su contenido por el mensaje de salida.
-        contenidoPrincipal.replaceChildren(tituloSalida, textoSalida);
-
-        // Desactiva los botones del menú al salir.
-        document.querySelectorAll(".menu-lateral button").forEach(function (boton) {
+        // Deshabilita la navegación porque el servidor se detendrá.
+        botonesMenu.forEach(function (boton) {
             boton.disabled = true;
         });
 
+        // Muestra un mensaje si Chrome no permite cerrar la pestaña.
+        const contenido = document.querySelector(".contenido");
+        const titulo = document.createElement("h2");
+        const mensaje = document.createElement("p");
+
+        titulo.textContent = "Sistema cerrado";
+        mensaje.textContent = "Ya puedes cerrar esta pestaña.";
+
+        contenido.replaceChildren(titulo, mensaje);
+
+        // Chrome puede bloquear esta acción si no se abrió con JavaScript.
+        window.close();
+
     } catch (error) {
 
-        // Informa que no se pudo confirmar la solicitud de cierre.
-        window.alert("No se pudo confirmar el cierre: " + error.message);
-
-        // Permite volver a intentarlo.
+        // Permite volver a intentar salir si la solicitud falló.
+        cerrandoSistema = false;
         botonSalir.disabled = false;
 
-    }
+        console.error("Error al salir:", error);
 
-});
-
-// Guarda los ingresos de esta sesión en una lista.
-const ingresos = [];
-
-// Encuentra el formulario.
-const formularioIngreso = document.getElementById("formulario-ingreso");
-
-// Encuentra sus campos.
-const fechaIngreso = document.getElementById("fecha-ingreso");
-const conceptoIngreso = document.getElementById("concepto-ingreso");
-const cantidadIngreso = document.getElementById("cantidad-ingreso");
-
-// Encuentra la tabla, el total y el mensaje.
-const tablaIngresos = document.getElementById("tabla-ingresos");
-const totalIngresos = document.getElementById("total-ingresos");
-const avisoIngreso = document.getElementById("aviso-ingreso");
-
-// Prepara un formato de moneda mexicana.
-const formatoPesos = new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency: "MXN"
-});
-
-// Obtiene la fecha actual de esta computadora.
-const hoy = new Date();
-
-// Obtiene el año.
-const anio = hoy.getFullYear();
-
-// Los meses empiezan en cero, por eso sumamos uno.
-// padStart agrega un cero cuando el número tiene un solo dígito.
-const mes = String(hoy.getMonth() + 1).padStart(2, "0");
-
-// Obtiene el día con dos dígitos.
-const dia = String(hoy.getDate()).padStart(2, "0");
-
-// Coloca hoy como fecha inicial del formulario.
-fechaIngreso.value = `${anio}-${mes}-${dia}`;
-
-// Quita el error personalizado cuando el usuario vuelve a escribir.
-conceptoIngreso.addEventListener("input", function () {
-    conceptoIngreso.setCustomValidity("");
-});
-
-// Detecta el envío del formulario.
-formularioIngreso.addEventListener("submit", function (evento) {
-
-    // Evita que el formulario recargue la página.
-    evento.preventDefault();
-
-    // Lee el concepto y elimina espacios al principio y al final.
-    const concepto = conceptoIngreso.value.trim();
-
-    // Rechaza conceptos que solo contienen espacios.
-    if (concepto === "") {
-        conceptoIngreso.setCustomValidity("Escribe un concepto.");
-        conceptoIngreso.reportValidity();
-        return;
-    }
-
-    // Separa los pesos y los centavos del texto capturado.
-    const partes = cantidadIngreso.value.split(".");
-
-    // Convierte los pesos en un número entero.
-    const pesos = Number(partes[0]);
-
-    // Completa la parte decimal hasta tener dos dígitos.
-    const centavos = Number((partes[1] || "").padEnd(2, "0"));
-
-    // Guarda el importe como centavos enteros para sumarlo.
-    const montoCentavos = pesos * 100 + centavos;
-
-    // Comprueba que el importe sea válido.
-    if (!Number.isSafeInteger(montoCentavos) || montoCentavos <= 0) {
-        avisoIngreso.textContent = "Escribe una cantidad válida mayor que cero.";
-        return;
-    }
-
-    // Crea un objeto con los datos del ingreso.
-    const nuevoIngreso = {
-        fecha: fechaIngreso.value,
-        concepto: concepto,
-        montoCentavos: montoCentavos
-    };
-
-    // Agrega el objeto a la lista.
-    ingresos.push(nuevoIngreso);
-
-    // Actualiza la tabla y el total.
-    mostrarIngresos();
-
-    // Limpia el concepto y la cantidad, conservando la fecha.
-    conceptoIngreso.value = "";
-    cantidadIngreso.value = "";
-
-    // Confirma el registro temporal.
-    avisoIngreso.textContent = "Ingreso agregado a esta sesión.";
-
-    // Coloca el cursor en el concepto para capturar otro ingreso.
-    conceptoIngreso.focus();
-
-});
-
-// Dibuja la tabla utilizando la lista de ingresos.
-function mostrarIngresos() {
-
-    // Elimina las filas que se mostraban anteriormente.
-    tablaIngresos.replaceChildren();
-
-    // Comienza la suma en cero.
-    let totalCentavos = 0;
-
-    // Recorre todos los ingresos.
-    ingresos.forEach(function (ingreso) {
-
-        // Crea una fila.
-        const fila = document.createElement("tr");
-
-        // Crea las tres celdas.
-        const celdaFecha = document.createElement("td");
-        const celdaConcepto = document.createElement("td");
-        const celdaCantidad = document.createElement("td");
-
-        // Cambia AAAA-MM-DD por DD/MM/AAAA para mostrar la fecha.
-        celdaFecha.textContent = ingreso.fecha.split("-").reverse().join("/");
-
-        // Inserta el concepto como texto.
-        celdaConcepto.textContent = ingreso.concepto;
-
-        // Convierte los centavos a pesos y aplica formato de moneda.
-        celdaCantidad.textContent = formatoPesos.format(
-            ingreso.montoCentavos / 100
+        window.alert(
+            "No se pudo cerrar el servidor. " +
+            "Abre el sistema desde http://127.0.0.1:3000 e intenta otra vez."
         );
+    }
+});
 
-        // Alinea el importe a la derecha.
-        celdaCantidad.classList.add("columna-cantidad");
-
-        // Coloca las celdas dentro de la fila.
-        fila.append(celdaFecha, celdaConcepto, celdaCantidad);
-
-        // Coloca la fila dentro de la tabla.
-        tablaIngresos.append(fila);
-
-        // Acumula la cantidad del ingreso.
-        totalCentavos += ingreso.montoCentavos;
-
-    });
-
-    // Muestra la suma debajo de la tabla.
-    totalIngresos.textContent = formatoPesos.format(totalCentavos / 100);
-
-    // Encuentra la cantidad de ingresos en la pantalla Inicio.
-const tarjetaIngresos = document.getElementById("resumen-ingresos");
-
-// Encuentra la cantidad de gastos en la pantalla Inicio.
-const tarjetaGastos = document.getElementById("resumen-gastos");
-
-// Encuentra el saldo en la pantalla Inicio.
-const tarjetaSaldo = document.getElementById("resumen-saldo");
-
-// Por ahora no tenemos registros de gastos.
-const gastosCentavos = 0;
-
-// Calcula el saldo de los movimientos de esta sesión.
-const saldoCentavos = totalCentavos - gastosCentavos;
-
-// Muestra los ingresos acumulados.
-tarjetaIngresos.textContent = formatoPesos.format(totalCentavos / 100);
-
-// Muestra los gastos, que todavía están en cero.
-tarjetaGastos.textContent = formatoPesos.format(gastosCentavos / 100);
-
-// Muestra el saldo calculado.
-tarjetaSaldo.textContent = formatoPesos.format(saldoCentavos / 100);
-
-}
+// Muestra los valores iniciales al abrir el sistema.
+actualizarInicio();

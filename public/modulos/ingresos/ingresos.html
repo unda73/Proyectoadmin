@@ -1,20 +1,41 @@
+<!-- Contenedor principal del módulo de Ingresos.
+     Permite aplicar estilos exclusivos a esta pantalla. -->
 <div class="ingresos-modulo">
+
+    <!-- Título y descripción de la pantalla. -->
     <header class="ing-encabezado">
         <h2>Alta de ingresos</h2>
-            <p>Registra el dinero recibido por turno y separa cada metodo de pago</p>      
+        <p>
+            Registra el dinero recibido por turno y separa cada método de pago.
+        </p>
     </header>
-  <!-- Divide la pantalla en captura y resumen lateral. -->
+
+    <!-- Distribuye el contenido en dos columnas:
+         izquierda: captura; derecha: resumen. -->
     <div class="ing-distribucion">
- <!-- Columna izquierda. -->
+
+        <!-- COLUMNA IZQUIERDA: formularios y detalle de pagos. -->
         <div class="ing-captura">
-             <!-- Datos generales del ingreso. -->
+
+            <!-- Formulario de los datos generales.
+                 El botón Registrar ingreso está más abajo y se
+                 conecta con este formulario mediante form="ing-datos". -->
             <form id="ing-datos" class="ing-fila">
-                  <div class="ing-campo">
+
+                <!-- Fecha del ingreso. -->
+                <div class="ing-campo">
                     <label for="ing-fecha">Fecha *</label>
-                    <input type="date" id="ing-fecha" required>
+                    <input
+                        type="date"
+                        id="ing-fecha"
+                        required>
                 </div>
-                         <div class="ing-campo">
+
+                <!-- Turno al que corresponde el ingreso.
+                     La opción vacía obliga a seleccionar un turno. -->
+                <div class="ing-campo">
                     <label for="ing-turno">Turno *</label>
+
                     <select id="ing-turno" required>
                         <option value="">Selecciona un turno</option>
                         <option value="Matutino">Matutino</option>
@@ -22,43 +43,65 @@
                     </select>
                 </div>
 
-                           <div class="ing-campo">
+                <!-- Persona responsable del ingreso.
+                     Por ahora utilizamos un nombre de ejemplo. -->
+                <div class="ing-campo">
                     <label for="ing-responsable">Responsable *</label>
+
                     <select id="ing-responsable" required>
                         <option value="">Selecciona un responsable</option>
                         <option value="Sergio">Sergio</option>
                     </select>
-                       </div>
+                </div>
 
             </form>
 
+            <!-- Panel que contiene la captura y la lista de pagos. -->
             <div class="ing-panel">
-                                <h3>Agregar método de pago</h3>
 
-                <!-- Este formulario agrega un pago al detalle. -->
+                <h3>Agregar método de pago</h3>
+
+                <!-- Formulario independiente para agregar un pago.
+                     Agregar un pago todavía no registra el ingreso completo. -->
                 <form id="ing-formulario-pago">
-                          <div class="ing-fila">
 
+                    <!-- Agrupa los tres campos en una fila. -->
+                    <div class="ing-fila">
+
+                        <!-- Selección del método de pago.
+                             JavaScript utiliza estos valores para clasificar
+                             los importes y calcular el resumen. -->
                         <div class="ing-campo">
                             <label for="ing-metodo">Método de pago *</label>
+
                             <select id="ing-metodo" required>
                                 <option value="efectivo">Efectivo</option>
                                 <option value="tarjeta">Tarjeta</option>
-                                <option value="transferencia">Transferencia</option>
+                                <option value="transferencia">
+                                    Transferencia
+                                </option>
                             </select>
                         </div>
-                                                <div class="ing-campo">
-                            <label for="ing-destino">Terminal o cuenta *</label>
 
-                            <!-- JavaScript cambiará las opciones. -->
+                        <!-- Terminal o cuenta que recibió el dinero.
+                             Empieza deshabilitada porque Efectivo no la necesita.
+                             JavaScript la habilita y cambia sus opciones. -->
+                        <div class="ing-campo">
+                            <label for="ing-destino">Terminal o cuenta</label>
+
                             <select id="ing-destino" disabled>
                                 <option value="">No aplica</option>
                             </select>
+                        </div>
 
-                             </div>
-
+                        <!-- Importe del pago.
+                             min: cantidad mínima permitida.
+                             max: cantidad máxima permitida.
+                             step: permite cantidades en incrementos de un centavo.
+                             required: el campo es obligatorio. -->
                         <div class="ing-campo">
                             <label for="ing-importe">Importe *</label>
+
                             <input
                                 type="number"
                                 id="ing-importe"
@@ -68,21 +111,31 @@
                                 placeholder="0.00"
                                 required>
                         </div>
-                          </div>
- <div class="ing-acciones">
+
+                    </div>
+
+                    <!-- Envía únicamente el formulario de pago.
+                         JavaScript agrega el pago al detalle. -->
+                    <div class="ing-acciones">
                         <button type="submit" class="ing-boton">
                             Agregar pago
                         </button>
                     </div>
-                     </form>
 
+                </form>
+
+                <!-- Lista de los pagos que forman el ingreso. -->
                 <h4>Detalle de ingresos</h4>
 
+                <!-- Contenedor para controlar el espacio de la tabla
+                     y permitir desplazamiento si el CSS lo establece. -->
                 <div class="ing-tabla-contenedor">
+
                     <table class="ing-tabla">
 
+                        <!-- Encabezados de las columnas. -->
                         <thead>
-                               <tr>
+                            <tr>
                                 <th scope="col">Método</th>
                                 <th scope="col">Terminal o cuenta</th>
                                 <th scope="col">Importe</th>
@@ -90,32 +143,88 @@
                             </tr>
                         </thead>
 
+                        <!-- JavaScript insertará aquí las filas de pagos
+                             y sus botones para eliminarlos. -->
                         <tbody id="ing-detalle"></tbody>
 
                     </table>
+
                 </div>
 
+                <!-- Acciones del ingreso completo. -->
                 <div class="ing-acciones">
+
+                    <!-- type="button" evita enviar un formulario.
+                         JavaScript controla la cancelación. -->
                     <button
-                    type="button"
-                    id="ing-cancelar"
-                    class="ing-boton ing-secundario">
-                    Cancelar
-                </button>
+                        type="button"
+                        id="ing-cancelar"
+                        class="ing-boton ing-secundario">
+                        Cancelar
+                    </button>
 
-                <button
-                type="submit"
-                form="ing-datos"
-                class="ing-boton">
-                Registrar ingreso
-            </button>
+                    <!-- Aunque está fuera del formulario ing-datos,
+                         el atributo form lo conecta con él.
+                         Al pulsarlo se validan fecha, turno y responsable. -->
+                    <button
+                        type="submit"
+                        form="ing-datos"
+                        class="ing-boton">
+                        Registrar ingreso
+                    </button>
+
                 </div>
-                <p id="ing-aviso" role="status">
 
-                </p>
+                <!-- Espacio para mensajes de validación o confirmación.
+                     Este ID debe aparecer una sola vez en el documento. -->
+                <p id="ing-aviso" role="status"></p>
+
             </div>
-        <p id="ing-aviso" role="status"> </p>
+
         </div>
+        <!-- Fin de la columna izquierda: ing-captura. -->
+
+        <!-- COLUMNA DERECHA: resumen de los pagos.
+             Está dentro de ing-distribucion, junto a ing-captura. -->
+   <!-- Resumen de los ingresos de la fecha seleccionada.
+     Separa los importes por turno y muestra el total del día. -->
+<aside class="ing-panel ing-resumen">
+
+    <h3>Resumen de ingresos</h3>
+
+    <!-- JavaScript mostrará aquí la fecha que estamos consultando. -->
+    <p id="ing-fecha-resumen" class="ing-nota"></p>
+
+    <!-- Total del turno matutino de la fecha seleccionada. -->
+    <div class="ing-tarjeta-turno">
+        <span>Matutino</span>
+        <strong id="ing-total-matutino">$0.00</strong>
     </div>
-        <aside class="ing-panel ing-resumen"></aside>
-        
+
+    <!-- Total del turno vespertino de la fecha seleccionada. -->
+    <div class="ing-tarjeta-turno">
+        <span>Vespertino</span>
+        <strong id="ing-total-vespertino">$0.00</strong>
+    </div>
+
+    <!-- Suma de ambos turnos del mismo día. -->
+    <div class="ing-tarjeta-dia">
+        <span>TOTAL DEL DÍA</span>
+        <strong id="ing-total-dia">$0.00</strong>
+    </div>
+
+    <!-- Explica si el resumen incluye pagos pendientes de confirmar. -->
+    <p id="ing-nota-resumen" class="ing-nota" role="status"></p>
+
+</aside>
+
+    </div>
+    <!-- Fin de la distribución de las dos columnas. -->
+
+    <!-- Aviso sobre el funcionamiento de esta versión de prueba. -->
+    <p class="ing-nota">
+        ED
+    </p>
+
+</div>
+<!-- Fin del módulo de Ingresos. -->

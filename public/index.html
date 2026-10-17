@@ -2,251 +2,395 @@
 <html lang="es">
 
 <head>
+    <!-- Permite mostrar acentos, la ñ y otros caracteres. -->
     <meta charset="UTF-8">
+
+    <!-- Ajusta el contenido al ancho del dispositivo. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Nombre que aparece en la pestaña del navegador. -->
     <title>Sistema Administrativo</title>
+
+    <!-- Estilos generales del sistema: menú, contenido y tarjetas. -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- el CSS de Ingresos se carga aquí, dentro del head.
+         La ruta comienza desde la carpeta donde está index.html. -->
+    <link rel="stylesheet" href="modulos/ingresos/ingresos.css">
+
+    <!-- app.js se carga una sola vez.
+         defer permite ejecutarlo cuando el HTML ya fue leído. -->
     <script src="app.js" defer></script>
 </head>
 
 <body>
-    <!-- Barra lateral del sistema. -->
+
+    <!-- BARRA LATERAL.
+         Permanece visible mientras cambiamos las pantallas del contenido. -->
     <aside class="menu-lateral">
 
-        <!-- logo del sistema* -->
-        <img src="img/papeleria.png"
-        alt="Logo del negocio"
-        class="logo-menu">
+        <!-- Logo del negocio. -->
+        <img
+            src="img/papeleria.png"
+            alt="Logo del negocio"
+            class="logo-menu">
 
+        <!-- Nombre del negocio debajo del logo. -->
         <div class="nombrenegocio">
-             <p>Papeleria untrac</p>
+            <p>Papelería UNTRAC</p>
         </div>
-       
 
         <!-- Agrupa los botones de navegación. -->
         <nav>
-          <!-- data-pantalla indica qué sección debe mostrar cada botón. -->
-    <button
-        type="button"
-        id="boton-inicio"
-        class="activo"
-        data-pantalla="pantalla-inicio"
-        aria-current="page">
-            <!-- Dibuja el icono de una casa. -->
-    <!-- aria-hidden evita que el lector de pantalla lea el dibujo. -->
-    <svg class="icono-menu" viewBox="0 0 24 24" aria-hidden="true">
 
-        <!-- Dibuja el techo. -->
-        <path d="M3 10 L12 3 L21 10"></path>
+            <!-- INICIO.
+                 data-pantalla indica el ID de la sección que debe mostrarse.
+                 activo aplica el estilo del botón seleccionado.
+                 aria-current indica cuál es la pantalla actual. -->
+            <button
+                type="button"
+                id="boton-inicio"
+                class="activo"
+                data-pantalla="pantalla-inicio"
+                aria-current="page">
 
-        <!-- Dibuja las paredes y la puerta. -->
-        <path d="M5 9 V21 H10 V14 H14 V21 H19 V9"></path>
-    </svg>
+                <!-- Icono de casa.
+                     aria-hidden evita que el lector de pantalla lea el dibujo. -->
+                <svg
+                    class="icono-menu"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
 
-    <!-- Conserva el nombre visible del botón. -->
-    <span>Inicio</span>
-    </button>
+                    <!-- Techo. -->
+                    <path d="M3 10 L12 3 L21 10"></path>
 
-   
-    <!-- Ingresos: flecha que entra a una bandeja. -->
-<button type="button" data-pantalla="pantalla-ingresos">
-    <svg class="icono-menu" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 3 V15 M7 10 L12 15 L17 10"></path>
-        <path d="M4 15 V21 H20 V15"></path>
-    </svg>
-    <span>Ingresos</span>
-</button>
+                    <!-- Paredes y puerta. -->
+                    <path d="M5 9 V21 H10 V14 H14 V21 H19 V9"></path>
+                </svg>
 
-<!-- Gastos: flecha que sale de una bandeja. -->
-<button type="button" data-pantalla="pantalla-gastos">
-    <svg class="icono-menu" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 15 V3 M7 8 L12 3 L17 8"></path>
-        <path d="M4 15 V21 H20 V15"></path>
-    </svg>
-    <span>Gastos</span>
-</button>
+                <span>Inicio</span>
+            </button>
 
-<!-- Bancos y cheques: edificio de un banco. -->
-<button type="button" data-pantalla="pantalla-BancosYCheques">
-    <svg class="icono-menu" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3 8 L12 3 L21 8 Z"></path>
-        <path d="M6 11 V18 M12 11 V18 M18 11 V18"></path>
-        <path d="M3 21 H21"></path>
-    </svg>
-    <span>Bancos y Cheques</span>
-</button>
+            <!-- INGRESOS: flecha que entra a una bandeja. -->
+            <button
+                type="button"
+                data-pantalla="pantalla-ingresos">
 
-<!-- Colaboradores: figuras de personas. -->
-<button type="button" data-pantalla="pantalla-colaboradores">
-    <svg class="icono-menu" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="9" cy="7" r="3"></circle>
-        <path d="M3 21 V18 A6 6 0 0 1 15 18 V21"></path>
-        <path d="M16 4 A3 3 0 0 1 16 10"></path>
-        <path d="M18 13 A5 5 0 0 1 21 18 V21"></path>
-    </svg>
-    <span>Colaboradores</span>
-</button>
+                <svg
+                    class="icono-menu"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
 
-<!-- Terminales: dispositivo con pantalla y teclado. -->
-<button type="button" data-pantalla="pantalla-Terminales">
-    <svg class="icono-menu" viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="5" y="2" width="14" height="20" rx="2"></rect>
-        <path d="M8 6 H16 V11 H8 Z"></path>
-        <path d="M8 15 H9 M12 15 H13 M16 15 H16.1"></path>
-        <path d="M8 18 H9 M12 18 H13 M16 18 H16.1"></path>
-    </svg>
-    <span>Terminales</span>
-</button>
+                    <path d="M12 3 V15 M7 10 L12 15 L17 10"></path>
+                    <path d="M4 15 V21 H20 V15"></path>
+                </svg>
 
-<!-- Reportes: gráfica de barras. -->
-<button type="button" data-pantalla="pantalla-Reportes">
-    <svg class="icono-menu" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3 3 V21 H21"></path>
-        <path d="M7 17 V11 M12 17 V7 M17 17 V4"></path>
-    </svg>
-    <span>Reportes</span>
-</button>
+                <span>Ingresos</span>
+            </button>
 
-<!-- Configuración: controles de ajuste. -->
-<button type="button" data-pantalla="pantalla-Configuracion">
-    <svg class="icono-menu" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 3 V7 M4 11 V21"></path>
-        <path d="M12 3 V13 M12 17 V21"></path>
-        <path d="M20 3 V7 M20 11 V21"></path>
-        <circle cx="4" cy="9" r="2"></circle>
-        <circle cx="12" cy="15" r="2"></circle>
-        <circle cx="20" cy="9" r="2"></circle>
-    </svg>
-    <span>Configuración</span>
-</button>
+            <!-- GASTOS: flecha que sale de una bandeja. -->
+            <button
+                type="button"
+                data-pantalla="pantalla-gastos">
 
-<!-- Salir: puerta con flecha de salida. -->
-<button type="button" id="boton-salir">
-    <svg class="icono-menu" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M9 3 H3 V21 H9"></path>
-        <path d="M9 12 H21 M16 7 L21 12 L16 17"></path>
-    </svg>
-    <span>Salir del sistema</span>
-</button>
+                <svg
+                    class="icono-menu"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <path d="M12 15 V3 M7 8 L12 3 L17 8"></path>
+                    <path d="M4 15 V21 H20 V15"></path>
+                </svg>
+
+                <span>Gastos</span>
+            </button>
+
+            <!-- BANCOS Y CHEQUES: icono de un banco. -->
+            <button
+                type="button"
+                data-pantalla="pantalla-BancosYCheques">
+
+                <svg
+                    class="icono-menu"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <path d="M3 8 L12 3 L21 8 Z"></path>
+                    <path d="M6 11 V18 M12 11 V18 M18 11 V18"></path>
+                    <path d="M3 21 H21"></path>
+                </svg>
+
+                <span>Bancos y Cheques</span>
+            </button>
+
+            <!-- COLABORADORES: icono de personas. -->
+            <button
+                type="button"
+                data-pantalla="pantalla-colaboradores">
+
+                <svg
+                    class="icono-menu"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <circle cx="9" cy="7" r="3"></circle>
+                    <path d="M3 21 V18 A6 6 0 0 1 15 18 V21"></path>
+                    <path d="M16 4 A3 3 0 0 1 16 10"></path>
+                    <path d="M18 13 A5 5 0 0 1 21 18 V21"></path>
+                </svg>
+
+                <span>Colaboradores</span>
+            </button>
+
+            <!-- TERMINALES: dispositivo con pantalla y teclado. -->
+            <button
+                type="button"
+                data-pantalla="pantalla-Terminales">
+
+                <svg
+                    class="icono-menu"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <rect
+                        x="5"
+                        y="2"
+                        width="14"
+                        height="20"
+                        rx="2">
+                    </rect>
+
+                    <path d="M8 6 H16 V11 H8 Z"></path>
+                    <path d="M8 15 H9 M12 15 H13 M16 15 H16.1"></path>
+                    <path d="M8 18 H9 M12 18 H13 M16 18 H16.1"></path>
+                </svg>
+
+                <span>Terminales</span>
+            </button>
+
+            <!-- REPORTES: gráfica de barras. -->
+            <button
+                type="button"
+                data-pantalla="pantalla-Reportes">
+
+                <svg
+                    class="icono-menu"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <path d="M3 3 V21 H21"></path>
+                    <path d="M7 17 V11 M12 17 V7 M17 17 V4"></path>
+                </svg>
+
+                <span>Reportes</span>
+            </button>
+
+            <!-- CONFIGURACIÓN: controles de ajuste. -->
+            <button
+                type="button"
+                data-pantalla="pantalla-Configuracion">
+
+                <svg
+                    class="icono-menu"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <path d="M4 3 V7 M4 11 V21"></path>
+                    <path d="M12 3 V13 M12 17 V21"></path>
+                    <path d="M20 3 V7 M20 11 V21"></path>
+
+                    <circle cx="4" cy="9" r="2"></circle>
+                    <circle cx="12" cy="15" r="2"></circle>
+                    <circle cx="20" cy="9" r="2"></circle>
+                </svg>
+
+                <span>Configuración</span>
+            </button>
+
+            <!-- SALIR.
+                 No tiene data-pantalla porque ejecuta una acción
+                 en lugar de mostrar otra sección. -->
+            <button
+                type="button"
+                id="boton-salir">
+
+                <svg
+                    class="icono-menu"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true">
+
+                    <path d="M9 3 H3 V21 H9"></path>
+                    <path d="M9 12 H21 M16 7 L21 12 L16 17"></path>
+                </svg>
+
+                <span>Salir del sistema</span>
+            </button>
+
         </nav>
     </aside>
 
-<main class="contenido">
+    <!-- CONTENIDO PRINCIPAL.
+         Aquí se muestran las pantallas al pulsar los botones.
+         El menú lateral queda fuera de este contenedor. -->
+    <main class="contenido">
 
-    <!-- Pantalla visible al abrir el sistema. -->
-    <section id="pantalla-inicio" class="pantalla">
+        <!-- INICIO.
+             No tiene hidden porque aparece al abrir el sistema. -->
+        <section id="pantalla-inicio" class="pantalla">
 
-        <h2>Inicio</h2>
+            <h2>Inicio</h2>
 
-        <p>Bienvenido a tu sistema administrativo.</p>
+            <p>Bienvenido a tu sistema administrativo.</p>
 
-        <!-- Agrupa las tarjetas del resumen. -->
-        <div class="resumen">
+            <!-- Agrupa las tres tarjetas del resumen. -->
+            <div class="resumen">
 
-            <article class="tarjeta tarjeta-resumen">
-                <h3>Ingresos</h3>
-                <p class="cantidad" id="resumen-ingresos">$0.00</p>
-            </article>
+                <!-- Total de ingresos registrados en esta sesión. -->
+                <article class="tarjeta tarjeta-resumen">
+                    <h3>Ingresos</h3>
 
-            <article class="tarjeta tarjeta-resumen">
-                <h3>Gastos</h3>
-                <!-- uno es para css y otro para js que en js modifica la cantidad-->
-                <p class="cantidad" id="resumen-gastos">$0.00</p>
-            </article>
+                    <!-- class se utiliza para los estilos.
+                         id permite encontrar el elemento desde JavaScript. -->
+                    <p class="cantidad" id="resumen-ingresos">$0.00</p>
+                </article>
 
-            <article class="tarjeta tarjeta-resumen">
-                <h3>Saldo</h3>
-                <p class="cantidad" id="resumen-saldo">$0.00</p>
-            </article>
+                <!-- Total de gastos. -->
+                <article class="tarjeta tarjeta-resumen">
+                    <h3>Gastos</h3>
+                    <p class="cantidad" id="resumen-gastos">$0.00</p>
+                </article>
 
-        </div>
+                <!-- Saldo: ingresos menos gastos. -->
+                <article class="tarjeta tarjeta-resumen">
+                    <h3>Saldo</h3>
+                    <p class="cantidad" id="resumen-saldo">$0.00</p>
+                </article>
 
-        <!-- Aclara que todavía no estamos consultando registros. -->
-        <p class="nota">
-            Resumen de esta sesion , no se guardan
-        </p>
+            </div>
 
-    </section>
- 
-    <!-- contenedor donde cargaremos la pnatalla desde otra clase-->
-    <section id="pantalla-ingresos" class="pantalla hiddden"></section>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="modulos/ingresos/ingresos.css">
-    <script src="app.js" defer></script>
-    <!-- Esta pantalla también comienza oculta. -->
-    <section id="pantalla-gastos" class="pantalla" hidden>
+            <!-- Aviso de que todavía no hay almacenamiento permanente. -->
+            <p class="nota">
+                Resumen de esta sesión. Los registros se pierden al recargar.
+            </p>
 
-        <h2>Gastos</h2>
+        </section>
 
-        <p>Lleva el control del dinero que sale de tu negocio.</p>
+        <!-- INGRESOS.
+             CORREGIDO: hidden va separado del atributo class.
+             Esta sección comienza vacía y oculta.
+             app.js debe cargar aquí modulos/ingresos/ingresos.html
+             cuando se pulse el botón Ingresos. -->
+        <section
+            id="pantalla-ingresos"
+            class="pantalla"
+            hidden>
+        </section>
 
-        <div class="tarjeta">
-            <h3>Registro de gastos</h3>
-            <p>Aquí construiremos el formulario y la tabla de gastos.</p>
-        </div>
+        <!-- CORREGIDO: aquí ya no repetimos los enlaces CSS ni app.js.
+             Todos se cargan una sola vez en el head. -->
 
-    </section>
+        <!-- GASTOS.
+             hidden mantiene la pantalla oculta hasta seleccionarla. -->
+        <section id="pantalla-gastos" class="pantalla" hidden>
 
-    <section id="pantalla-BancosYCheques" class="pantalla" hidden>
+            <h2>Gastos</h2>
 
-        <h2>Bancos y Cheques</h2>
+            <p>Lleva el control del dinero que sale de tu negocio.</p>
 
-        <p>Administra los bancos y cheques de tu negocio.</p>
+            <div class="tarjeta">
+                <h3>Registro de gastos</h3>
+                <p>
+                    Aquí construiremos el formulario y la tabla de gastos.
+                </p>
+            </div>
 
-        <div class="tarjeta">
-            <h3>Registro de bancos y cheques</h3>
-            <p>Aquí construiremos el formulario y la tabla de bancos y cheques.</p>
-        </div>
+        </section>
 
-    </section>
+        <!-- BANCOS Y CHEQUES.
+             Su ID coincide con el data-pantalla de su botón. -->
+        <section id="pantalla-BancosYCheques" class="pantalla" hidden>
 
+            <h2>Bancos y Cheques</h2>
 
+            <p>Administra los bancos y cheques de tu negocio.</p>
 
-    <section id="pantalla-colaboradores" class="pantalla" hidden>
+            <div class="tarjeta">
+                <h3>Registro de bancos y cheques</h3>
+                <p>
+                    Aquí construiremos el formulario y la tabla
+                    de bancos y cheques.
+                </p>
+            </div>
 
-        <h2>Colaboradores</h2>
+        </section>
 
-        <p>Administra los usuarios que pueden acceder al sistema.</p>
+        <!-- COLABORADORES. -->
+        <section id="pantalla-colaboradores" class="pantalla" hidden>
 
-        <div class="tarjeta">
-            <h3>Registro de colaboradores</h3>
-            <p>Aquí construiremos el formulario y la tabla de colaboradores.</p>
-        </div>
+            <h2>Colaboradores</h2>
 
-    </section>
+            <p>Administra los usuarios que pueden acceder al sistema.</p>
 
-    <section id="pantalla-Terminales" class="pantalla" hidden>
+            <div class="tarjeta">
+                <h3>Registro de colaboradores</h3>
+                <p>
+                    Aquí construiremos el formulario y la tabla
+                    de colaboradores.
+                </p>
+            </div>
 
-        <h2>Terminales</h2>
+        </section>
 
-        <p>Administra las terminales que pueden acceder al sistema.</p>
+        <!-- TERMINALES. -->
+        <section id="pantalla-Terminales" class="pantalla" hidden>
 
-        <div class="tarjeta">
-            <h3>Registro de terminales</h3>
-            <p>Aquí construiremos el formulario y la tabla de terminales.</p>
-        </div>  
-    </section>
+            <h2>Terminales</h2>
 
-    <section id="pantalla-Reportes" class="pantalla" hidden>
-        <h2>Reportes</h2>
-        <p>genera reporte</p>
-        <div class="tarjeta">
-            <h3>Registro de Reporte</h3>
-            <p>Aquí construiremos el formulario y la tabla de Reporte.</p>
-        </div> 
+            <p>Administra las terminales de pago de tu negocio.</p>
 
-    </section>
+            <div class="tarjeta">
+                <h3>Registro de terminales</h3>
+                <p>
+                    Aquí construiremos el formulario y la tabla de terminales.
+                </p>
+            </div>
 
-    <section id="pantalla-Configuracion" class="pantalla" hidden>
-        <h2>Configuración</h2>
-        <p>configura el sistema</p>
-        <div class="tarjeta">
-            <h3>Registro de Configuración</h3>
-            <p>Aquí construiremos el formulario y la tabla de Configuración.</p>
-        </div>
-    </section>
-    
+        </section>
 
-</main>
+        <!-- REPORTES. -->
+        <section id="pantalla-Reportes" class="pantalla" hidden>
+
+            <h2>Reportes</h2>
+
+            <p>Genera reportes de los movimientos de tu negocio.</p>
+
+            <div class="tarjeta">
+                <h3>Registro de reportes</h3>
+                <p>
+                    Aquí construiremos las opciones para consultar
+                    y generar reportes.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- CONFIGURACIÓN. -->
+        <section id="pantalla-Configuracion" class="pantalla" hidden>
+
+            <h2>Configuración</h2>
+
+            <p>Configura el sistema.</p>
+
+            <div class="tarjeta">
+                <h3>Configuración del sistema</h3>
+                <p>
+                    Aquí construiremos las opciones de configuración.
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
 </body>
 </html>

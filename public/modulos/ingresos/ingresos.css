@@ -1,0 +1,358 @@
+/* Fondo y espacio interior de la pantalla de ingresos. */
+.ingresos-modulo {
+    background-color: #f5f2e9;/*fondo */
+    color: #262c28; /*color de letras*/
+    padding: 24px; /* alejamiento de letras*/
+    border-radius: 10px;
+}
+
+/* Título principal. */
+.ingresos-modulo h2 {
+    margin: 0 0 8px;
+    font-size: 30px;/*letra del titulo*/
+}
+
+/* Separa el encabezado de los formularios. */
+.ingresos-modulo .ing-encabezado {
+    margin-bottom: 24px;
+}
+
+/* Ajusta la descripción que aparece debajo del título. */
+.ingresos-modulo .ing-encabezado p {
+    margin: 0;/*alejamiento de letra de subtitulo*/
+    color: #5b655e;/*color*/
+    line-height: 1.5;/*alejamiento al titulo*/
+}
+
+/* Crea las dos columnas: captura y resumen. */
+.ingresos-modulo .ing-distribucion {
+display: grid;
+grid-template-columns:minmax(0, 1fr) 260px;
+gap: 24px;
+align-items: start;
+}
+
+/*Permite que la columna izquierda se reduzca sin desbordarse.*/
+.ingresos-modulo .ing-captura {
+    min-height: 0;
+}
+
+/*coloca los campos de un formulario en tres columnas.*/
+.ingresos-modulo .ing-fila {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));/*coloco en modo fila*/
+    gap:16px;/*separa*/
+}
+
+/*separa los datos generales del panel de pagos*/
+.ingresos-modulo #ing-datos{
+    margin-bottom: 24px;
+}
+
+/*coloca la etiqueta encima de su campo*/
+.ingresos-modulo .ing-campo {
+    display: flex; /*junto los jtexfield con las label*/
+    flex-direction: column;/*los bajo */
+    gap: 8px;/*separo*/
+    min-width: 0;
+}
+
+/*Resalta los nombres de los campos*/
+.ingresos-modulo .ing-campo label{
+    font-weight: bold;/*negrillas*/
+    font-size: 14px;/*tamaño*/
+}
+
+/*Da el mismo diseños a los campos y listas desplegables.*/
+.ingresos-modulo .ing-campo input, .ingresos-modulo .ing-campo select{
+    width: 100%;
+    min-width: 0;
+    padding: 12px;/*ancho el jtexfield*/
+    border: 1px solid #c7cec7;/*quito border, color solido,  */
+    border-radius: 8px;/*quito los border pero lo puso circular*/
+    background-color: white;
+    color: #262c28;
+    font: inherit;/*letras mas grande*/
+}
+
+/*Resalta el campo que estamos utilizando */
+.ingresos-modulo .ing-campo input:focus, .ingresos-modulo .ing-campo select:focus{
+    outline: 2px solid #166534;
+    outline: 2px; 
+}
+
+/* Diferencia los campos deshabilitados, como No aplica. */
+.ingresos-modulo .ing-campo select:disabled {
+    background-color: #edf0eb;
+    color: #6b746d;
+    cursor: not-allowed;
+}
+
+/*ENTRAMOS ALA TARJETA BLANCA*/
+/* Tarjeta blanca para captura y resumen. */
+.ingresos-modulo .ing-panel {
+    background-color: white;
+    border: 1px solid #dce2d9;
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 0;
+}
+
+/* Quita el espacio superior de los títulos de los paneles. */
+.ingresos-modulo .ing-panel h3 {
+    margin: 0 0 20px;
+    font-size: 19px;
+}
+
+/* Separa el título del detalle del formulario de pago. */
+.ingresos-modulo .ing-panel h4 {
+    margin: 28px 0 12px;
+    font-size: 16px;
+}
+
+/* Alinea los botones hacia la derecha.
+   Si no caben, permite que pasen a otra línea. */
+.ingresos-modulo .ing-acciones {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* Diseño general de los botones del módulo. */
+.ingresos-modulo .ing-boton {
+    padding: 11px 18px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background-color: #166534;
+    color: white;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Cambia el color al pasar el cursor sobre un botón. */
+.ingresos-modulo .ing-boton:hover {
+    background-color: #14532d;
+}
+
+
+/* Indica el botón seleccionado cuando navegamos con el teclado. */
+.ingresos-modulo .ing-boton:focus-visible {
+    outline: 2px solid #166534;
+    outline-offset: 3px;
+}
+
+
+/* Diseño del botón Cancelar. */
+.ingresos-modulo .ing-secundario {
+    background-color: white;
+    color: #34463a;
+    border-color: #bdc9bf;
+}
+
+
+/* Color del botón Cancelar al pasar el cursor. */
+.ingresos-modulo .ing-secundario:hover {
+    background-color: #edf3ed;
+}
+
+
+/* Permite desplazar horizontalmente la tabla si no cabe. */
+.ingresos-modulo .ing-tabla-contenedor {
+    overflow-x: auto;
+}
+
+
+/* Hace que la tabla ocupe el ancho disponible. */
+.ingresos-modulo .ing-tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+/* Espacios y líneas entre las filas de la tabla. */
+.ingresos-modulo .ing-tabla th,
+.ingresos-modulo .ing-tabla td {
+    padding: 12px;
+    border-bottom: 1px solid #e1e7df;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+
+/* Fondo de los encabezados de la tabla. */
+.ingresos-modulo .ing-tabla th {
+    background-color: #edf3ed;
+    color: #34463a;
+    font-size: 14px;
+}
+
+
+/* Alinea los importes a la derecha y evita partir las cantidades. */
+.ingresos-modulo .ing-tabla th:nth-child(3),
+.ingresos-modulo .ing-tabla td:nth-child(3) {
+    text-align: right;
+    white-space: nowrap;
+}
+
+
+/* Hace más pequeño el botón Eliminar de cada fila. */
+.ingresos-modulo .ing-eliminar {
+    padding: 7px 10px;
+    background-color: #fff1f0;
+    color: #9b2929;
+    border-color: #efceca;
+    font-size: 13px;
+}
+
+
+/* Color al pasar el cursor sobre Eliminar. */
+.ingresos-modulo .ing-eliminar:hover {
+    background-color: #ffe0dc;
+}
+
+
+/* Mantiene el resumen alineado arriba de su columna. */
+.ingresos-modulo .ing-resumen {
+    align-self: start;
+}
+
+
+/* Coloca el nombre del método y su total en extremos opuestos. */
+.ingresos-modulo .ing-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 16px 0;
+    border-bottom: 1px solid #e1e7df;
+}
+
+
+/* Evita que las cantidades se dividan entre líneas. */
+.ingresos-modulo .ing-total strong {
+    white-space: nowrap;
+}
+
+
+/* Resalta el total general. */
+.ingresos-modulo .ing-total-general {
+    margin-top: 12px;
+    border-bottom: none;
+    color: #166534;
+    font-weight: bold;
+}
+
+
+/* Aumenta el tamaño del importe total. */
+.ingresos-modulo .ing-total-general strong {
+    font-size: 24px;
+}
+
+
+/* Diseño de las notas explicativas. */
+.ingresos-modulo .ing-nota {
+    margin-top: 20px;
+    color: #626c65;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* Espacio para mensajes de registro, cancelación o validación. */
+.ingresos-modulo #ing-aviso {
+    min-height: 24px;
+    margin: 16px 0 0;
+    color: #34463a;
+    line-height: 1.5;
+}
+
+
+/* En pantallas medianas, coloca el resumen debajo de la captura. */
+@media (max-width: 1100px) {
+    .ingresos-modulo .ing-distribucion {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* En pantallas pequeñas, coloca los campos uno debajo del otro. */
+@media (max-width: 700px) {
+    .ingresos-modulo {
+        padding: 16px;
+    }
+
+    .ingresos-modulo .ing-fila {
+        grid-template-columns: 1fr;
+    }
+
+    .ingresos-modulo .ing-panel {
+        padding: 16px;
+    }
+
+    .ingresos-modulo .ing-acciones {
+        flex-direction: column;
+    }
+
+    .ingresos-modulo .ing-acciones .ing-boton {
+        width: 100%;
+    }
+}
+
+
+/* Tarjetas de los turnos matutino y vespertino. */
+.ingresos-modulo .ing-tarjeta-turno {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 18px;
+    background-color: #e6f2ed;
+    border-radius: 6px;
+}
+
+/* Nombre del turno dentro de cada tarjeta. */
+.ingresos-modulo .ing-tarjeta-turno span {
+    color: #105a46;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Importe acumulado del turno. */
+.ingresos-modulo .ing-tarjeta-turno strong {
+    color: #29332d;
+    font-size: 26px;
+    overflow-wrap: anywhere;
+}
+
+/* Tarjeta verde con el total del día seleccionado. */
+.ingresos-modulo .ing-tarjeta-dia {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 28px;
+    padding: 20px 18px;
+    background-color: #105a46;
+    color: white;
+    border-radius: 6px;
+}
+
+/* Texto TOTAL DEL DÍA. */
+.ingresos-modulo .ing-tarjeta-dia span {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Cantidad total de ambos turnos. */
+.ingresos-modulo .ing-tarjeta-dia strong {
+    font-size: 32px;
+    overflow-wrap: anywhere;
+}
+
+/* Fecha que corresponde al resumen. */
+.ingresos-modulo #ing-fecha-resumen {
+    margin: 0 0 18px;
+}
