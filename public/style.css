@@ -192,3 +192,100 @@ body{
     /* Deja espacio debajo del nombre. */
     margin: 0 auto 16px;
 }
+/*coloca los campos uno debajo del otro*/
+.formulario {
+    display: grid; /*puso largo registrar ingreso*/
+    gap: 18px;
+    max-width: 600px;/* lo puso mas chico*/
+}
+
+/*Agrupa etiqueta con su campo*/
+.campo{
+    display: flex;/* lo pego mas*/
+    flex-direction: column;/* los puso en columna*/
+    gap: 18px;/*separo*/
+}
+
+.campo label {
+    font-weight: bold; /*negrillas*/
+}
+
+.campo input{
+    width: 100%; /*mas ancho*/
+    min-width: 0;
+    padding: 12px;/* hace mas grande los cuadros*/
+    border: 1px solid #b8c4cc;/* modifica los bordes*/
+    border-radius: 8px;/*los bordes se vuelven circular*/
+    font: inherit;/*mas grande las letras*/
+    background-color: white; /*fondo blanco*/
+    color: #243238; /*las lineas medio blanco de los bordes*/
+}
+
+.campo input:focus {
+    outline: 2px solid #166534;
+    outline-offset: 2px;
+}
+
+/*diseña el boton de registro*/
+.boton-guardar{
+    padding: 14px 20px;/*separa la letra */
+    border: none; /* sin border*/
+    border-radius: 8px;/*circular*/
+    background-color: #166534;/*fondo verde*/
+    color: white; /*letras blancas*/
+    font: inherit;
+    font-weight: bold; /*letras negrillas*/
+    cursor: pointer;/*cambio cursor*/
+}
+
+.boton-guardar:hover{
+    background-color: #14532d;
+}
+
+.contenedor-tabla {
+    overflow-x: auto;
+}
+
+.tabla-registro {
+    width: 100%;
+    border-collapse:collapse;
+}
+
+.tabla-registro th,
+.tabla-registro td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #e3e8f0;
+    overflow-wrap: anywhere;
+}
+
+.tabla-registros th {
+    background-color: #eef6f0;
+}
+
+
+.tabla-registros .columna-cantidad {
+    text-align: right;
+    white-space: nowrap;
+}
+
+
+.total-registros {
+    text-align: right;
+    margin-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

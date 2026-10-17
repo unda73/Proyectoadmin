@@ -145,42 +145,34 @@
 
             <article class="tarjeta tarjeta-resumen">
                 <h3>Ingresos</h3>
-                <p class="cantidad">$0.00</p>
+                <p class="cantidad" id="resumen-ingresos">$0.00</p>
             </article>
 
             <article class="tarjeta tarjeta-resumen">
                 <h3>Gastos</h3>
-                <p class="cantidad">$0.00</p>
+                <!-- uno es para css y otro para js que en js modifica la cantidad-->
+                <p class="cantidad" id="resumen-gastos">$0.00</p>
             </article>
 
             <article class="tarjeta tarjeta-resumen">
                 <h3>Saldo</h3>
-                <p class="cantidad">$0.00</p>
+                <p class="cantidad" id="resumen-saldo">$0.00</p>
             </article>
 
         </div>
 
         <!-- Aclara que todavía no estamos consultando registros. -->
         <p class="nota">
-            Valores de ejemplo. Todavía no hay conexión con la base de datos.
+            Resumen de esta sesion , no se guardan
         </p>
 
     </section>
-
-    <!-- hidden mantiene esta pantalla oculta al iniciar. -->
-    <section id="pantalla-ingresos" class="pantalla" hidden>
-
-        <h2>Ingresos</h2>
-
-        <p>Registra el dinero que entra a tu negocio.</p>
-
-        <div class="tarjeta">
-            <h3>Registro de ingresos</h3>
-            <p>Aquí construiremos el formulario y la tabla de ingresos.</p>
-        </div>
-
-    </section>
-
+ 
+    <!-- contenedor donde cargaremos la pnatalla desde otra clase-->
+    <section id="pantalla-ingresos" class="pantalla hiddden"></section>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="modulos/ingresos/ingresos.css">
+    <script src="app.js" defer></script>
     <!-- Esta pantalla también comienza oculta. -->
     <section id="pantalla-gastos" class="pantalla" hidden>
 
