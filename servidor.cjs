@@ -127,8 +127,13 @@ async function comprobarSistema() {
 
 }
 
-// Intenta iniciar el servidor.
-const servidor = app.listen(PUERTO, HOST, async function () {
+const servidor = app.listen(PUERTO, HOST, async function (error) {
+
+    // Si falla el arranque, dejamos que servidor.on("error")
+    // lo atienda. Así evitamos abrir Chrome dos veces.
+    if (error) {
+        return;
+    }
 
     // Esta función se ejecuta cuando el servidor ya está listo.
     console.log(`Sistema disponible en: ${URL_SISTEMA}`);
