@@ -6,6 +6,8 @@ const pantallas = document.querySelectorAll(".pantalla");
 
 // Guarda la carga del módulo para no cargarlo varias veces.
 let cargaIngresos = null;
+// Guarda la carga de Bancos para no repetirla al cambiar de pantalla.
+let cargaBancos = null;
 
 // Guarda los ingresos confirmados de esta sesión en centavos.
 let ingresosConfirmados = 0;
@@ -105,6 +107,59 @@ async function cargarIngresos() {
         throw error;
     }
 }
+// Carga la interfaz y prepara sus botones.
+async function prepararBancos() {
+
+    const contenedor = document.getElementById("pantalla-BancosYCheques");
+
+    contenedor.textContent = "Cargando Bancos y Cheques…";
+
+    // Obtiene el formulario.
+    const respuesta = await fetch("./modulos/bancos/bancos.html");
+
+    if (!respuesta.ok) {
+        throw new Error(
+            `No se pudo cargar bancos.html. Código: ${respuesta.status}`
+        );
+    }
+
+    const html = await respuesta.text();
+
+    // Importa las funciones del módulo de Bancos.
+    const modulo = await import("./modulos/bancos/bancos.js");
+
+    // Primero coloca los campos en la pantalla.
+    contenedor.innerHTML = html;
+
+    // Después conecta sus eventos.
+    modulo.iniciarBancos(contenedor);
+}
+
+// Evita volver a cargar el formulario cada vez que pulsamos el botón.
+async function cargarBancos() {
+
+    // Reutiliza la carga si ya había comenzado o terminado.
+    if (cargaBancos) {
+        return cargaBancos;
+    }
+
+    // Guarda la operación de carga.
+    cargaBancos = prepararBancos();
+
+    try {
+
+        // Espera a que termine.
+        await cargaBancos;
+
+    } catch (error) {
+
+        // Permite intentarlo nuevamente si falla.
+        cargaBancos = null;
+
+        // Envía el error al código del botón.
+        throw error;
+    }
+}
 
 // Asigna una acción a cada botón del menú.
 botonesMenu.forEach(function (boton) {
@@ -144,6 +199,25 @@ botonesMenu.forEach(function (boton) {
                 otroBoton.removeAttribute("aria-current");
             }
         });
+                // Carga el módulo cuando se selecciona Bancos y Cheques.
+        if (idPantalla === "pantalla-BancosYCheques") {
+
+            try {
+
+                await cargarBancos();
+
+            } catch (error) {
+
+                // Muestra el error dentro de la pantalla de Bancos.
+                document.getElementById("pantalla-BancosYCheques").textContent =
+                    "No se pudo cargar Bancos y Cheques. " +
+                    "Revisa que exista modulos/bancos/bancos.html. " +
+                    "Pulsa Bancos y Cheques para intentarlo otra vez.";
+
+                // Muestra el detalle técnico en la consola.
+                console.error("Error al cargar Bancos:", error);
+            }
+        }
 
         // Carga el módulo cuando se selecciona Ingresos.
         if (idPantalla === "pantalla-ingresos") {

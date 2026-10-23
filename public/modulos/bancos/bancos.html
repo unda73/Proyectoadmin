@@ -1,0 +1,204 @@
+<!-- Contenedor de todo el módulo de Bancos. -->
+<div class="bancos-modulo">
+
+    <!-- Encabezado de la pantalla. -->
+    <header class="bancos-encabezado">
+        <h2>Alta de banco</h2>
+        <p>
+            Registra un banco y sus cuentas para controlar
+            los movimientos de tu negocio.
+        </p>
+    </header>
+
+    <!-- Distribuye el formulario y la lista de bancos. -->
+    <div class="bancos-columnas">
+
+        <!-- Panel izquierdo: formulario. -->
+        <section class="bancos-panel" aria-labelledby="titulo-datos-banco">
+
+            <h3 id="titulo-datos-banco">Información bancaria</h3>
+
+            <!-- Los campos se preparan para conectarlos con JavaScript. -->
+            <form id="formulario-banco">
+
+                <!-- Agrupa los campos que irán en dos columnas. -->
+                <div class="bancos-campos">
+
+                    <!-- Nombre de la institución bancaria. -->
+                    <div class="bancos-campo">
+                        <label for="banco-nombre">Nombre del banco *</label>
+                        <input
+                            type="text"
+                            id="banco-nombre"
+                            name="banco"
+                            placeholder="Ej. BBVA"
+                            maxlength="80"
+                            required>
+                    </div>
+
+                    <!-- Nombre para identificar la cuenta. -->
+                    <div class="bancos-campo">
+                        <label for="banco-alias">Nombre de la cuenta *</label>
+                        <input
+                            type="text"
+                            id="banco-alias"
+                            name="nombreCuenta"
+                            placeholder="Ej. Cuenta principal"
+                            maxlength="80"
+                            required>
+                    </div>
+
+                    <!-- Se usa texto para conservar los ceros iniciales. -->
+                    <div class="bancos-campo">
+                        <label for="banco-numero">Número de cuenta *</label>
+                        <input
+                            type="text"
+                            id="banco-numero"
+                            name="numeroCuenta"
+                            placeholder="Número de cuenta"
+                            inputmode="numeric"
+                            pattern="[0-9]+"
+                            title="Escribe únicamente números."
+                            required>
+                    </div>
+
+                    <!-- CLABE opcional: si se escribe, debe tener 18 dígitos. -->
+                    <div class="bancos-campo">
+                        <label for="banco-clabe">CLABE</label>
+                        <input
+                            type="text"
+                            id="banco-clabe"
+                            name="clabe"
+                            placeholder="18 dígitos"
+                            inputmode="numeric"
+                            minlength="18"
+                            maxlength="18"
+                            pattern="[0-9]{18}"
+                            title="Escribe los 18 dígitos de la CLABE.">
+                    </div>
+
+                    <!-- Persona o negocio titular de la cuenta. -->
+                    <div class="bancos-campo">
+                        <label for="banco-titular">Titular *</label>
+                        <input
+                            type="text"
+                            id="banco-titular"
+                            name="titular"
+                            placeholder="Nombre del titular"
+                            maxlength="150"
+                            required>
+                    </div>
+
+                    <!-- Lista de tipos de cuenta. -->
+                    <div class="bancos-campo">
+                        <label for="banco-tipo">Tipo de cuenta *</label>
+                        <select id="banco-tipo" name="tipoCuenta" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="empresarial">Cuenta empresarial</option>
+                            <option value="ahorro">Cuenta de ahorro</option>
+                            <option value="cheques">Cuenta de cheques</option>
+                            <option value="nomina">Cuenta de nómina</option>
+                            <option value="otra">Otra</option>
+                        </select>
+                    </div>
+
+                    <!-- step permite capturar cantidades con dos decimales. -->
+                    <div class="bancos-campo">
+                        <label for="banco-saldo">Saldo inicial (MXN)</label>
+                        <input
+                            type="number"
+                            id="banco-saldo"
+                            name="saldoInicial"
+                            placeholder="0.00"
+                            step="0.01">
+                    </div>
+
+                    <!-- Estado de la cuenta. -->
+                    <div class="bancos-campo">
+                        <label for="banco-estado">Estado *</label>
+                        <select id="banco-estado" name="estado" required>
+                            <option value="activa">Activa</option>
+                            <option value="inactiva">Inactiva</option>
+                        </select>
+                    </div>
+
+                    <!-- Este campo ocupará el ancho de ambas columnas. -->
+                    <div class="bancos-campo bancos-campo-completo">
+                        <label for="banco-observaciones">Observaciones</label>
+                        <textarea
+                            id="banco-observaciones"
+                            name="observaciones"
+                            rows="3"
+                            maxlength="500"
+                            placeholder="Ej. Cuenta utilizada para recibir pagos"
+                        ></textarea>
+                    </div>
+
+                </div>
+
+                <!-- Aviso y botones del formulario. -->
+                <div class="bancos-pie-formulario">
+
+                    <small>* Campos obligatorios</small>
+
+                    <div class="bancos-acciones">
+
+                        <!-- Restablece los campos a sus valores iniciales. -->
+                        <button
+                            type="reset"
+                            class="bancos-boton-secundario">
+                            Cancelar
+                        </button>
+
+                        <!-- Se habilitará cuando programemos la interacción. -->
+                        <button
+                            type="button"
+                            id="banco-guardar"
+                            class="bancos-boton-principal"
+                            disabled>
+                            Guardar banco
+                        </button>
+
+                    </div>
+                </div>
+
+                <p class="bancos-aviso">
+                    Vista de diseño: el guardado todavía no está habilitado.
+                </p>
+
+            </form>
+        </section>
+
+        <!-- Panel derecho: cuentas registradas. -->
+        <section class="bancos-panel bancos-listado"
+                 aria-labelledby="titulo-lista-bancos">
+
+            <h3 id="titulo-lista-bancos">Bancos registrados</h3>
+
+            <p id="bancos-contador">0 cuentas registradas</p>
+
+    <header class="bancos-encabezado">
+        <h2>Alta de banco</h2>
+        <p>
+            Registra un banco y sus cuentas para controla
+            <!-- Aquí mostraremos las tarjetas con JavaScript. -->
+            <div id="bancos-lista">
+                <p class="bancos-vacio">
+                    Todavía no hay cuentas registradas.
+                </p>
+            </div>
+
+            <!-- El buscador se habilitará al programar el listado. -->
+            <div class="bancos-campo">
+                <label for="bancos-buscar">Buscar banco</label>
+                <input
+                    type="search"
+                    id="bancos-buscar"
+                    placeholder="Nombre del banco"
+                    disabled>
+            </div>
+
+        </section>
+
+    </div>
+</div>

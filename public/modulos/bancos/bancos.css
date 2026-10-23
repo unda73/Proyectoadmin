@@ -1,0 +1,368 @@
+/* Aplica el cálculo de tamaños solo dentro del módulo. */
+.bancos-modulo,
+.bancos-modulo * {
+    box-sizing: border-box;
+}
+
+/* Apariencia general del módulo. */
+.bancos-modulo {
+    font-family: Arial, sans-serif;
+    color: #272b28;
+    background-color: #f5f2e9;
+    padding: 28px;
+    border-radius: 8px;
+}
+
+/* Espacio entre el encabezado y los paneles. */
+.bancos-encabezado {
+    margin-bottom: 24px;
+}
+
+.bancos-encabezado h2 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.bancos-encabezado p {
+    margin: 0;
+    color: #6c726e;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Columna amplia para el formulario y otra para el listado. */
+.bancos-columnas {
+    display: grid;
+    grid-template-columns: minmax(0, 2.7fr) minmax(240px, 1fr);
+    gap: 24px;
+    align-items: stretch;
+}
+
+/* Paneles blancos con borde discreto. */
+.bancos-panel {
+    min-width: 0;
+    padding: 26px;
+    background-color: #ffffff;
+    border: 1px solid #dcded9;
+    border-radius: 8px;
+}
+
+.bancos-panel h3 {
+    margin: 0 0 24px;
+    color: #0d5743;
+    font-size: 19px;
+}
+
+/* Distribuye los campos del formulario en dos columnas. */
+.bancos-campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+/* Coloca la etiqueta encima de su campo. */
+.bancos-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.bancos-campo label {
+    color: #343a36;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Apariencia compartida de los campos. */
+.bancos-campo input,
+.bancos-campo select,
+.bancos-campo textarea {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    margin: 0;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #303732;
+    background-color: #ffffff;
+    border: 1px solid #d5dad6;
+    border-radius: 6px;
+}
+
+/* Color del texto de ejemplo. */
+.bancos-campo input::placeholder,
+.bancos-campo textarea::placeholder {
+    color: #7a817c;
+    opacity: 1;
+}
+
+/* Resalta el campo que se está utilizando. */
+.bancos-campo input:focus,
+.bancos-campo select:focus,
+.bancos-campo textarea:focus {
+    border-color: #0d5743;
+    outline: 2px solid #c7e3d8;
+    outline-offset: 1px;
+}
+
+/* Permite ampliar las observaciones verticalmente. */
+.bancos-campo textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+/* Observaciones ocupa ambas columnas. */
+.bancos-campo-completo {
+    grid-column: 1 / -1;
+}
+
+/* Coloca el aviso y los botones al final del formulario. */
+.bancos-pie-formulario {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.bancos-pie-formulario small {
+    color: #b42318;
+    font-size: 12px;
+}
+
+/* Agrupa Cancelar y Guardar. */
+.bancos-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.bancos-acciones button {
+    min-height: 44px;
+    padding: 12px 24px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* Botón Cancelar. */
+.bancos-acciones .bancos-boton-secundario {
+    color: #303732;
+    background-color: #f5f2e9;
+}
+
+.bancos-boton-secundario:hover {
+    background-color: #e9e5d9;
+}
+
+/* Botón Guardar banco. */
+.bancos-acciones .bancos-boton-principal {
+    color: #ffffff;
+    background-color: #0d5743;
+}
+
+.bancos-boton-principal:hover:not(:disabled) {
+    background-color: #084232;
+}
+
+/* Identifica los botones al navegar con el teclado. */
+.bancos-acciones button:focus-visible {
+    outline: 3px solid #83baa4;
+    outline-offset: 3px;
+}
+
+/* Indica que el guardado aún no está disponible. */
+.bancos-acciones button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Aviso temporal de la interfaz. */
+.bancos-aviso {
+    margin: 18px 0 0;
+    color: #6c726e;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Distribución del panel derecho. */
+.bancos-listado {
+    display: flex;
+    flex-direction: column;
+}
+
+.bancos-listado h3 {
+    margin-bottom: 8px;
+    color: #272b28;
+}
+
+.bancos-listado #bancos-contador {
+    margin: 0 0 24px;
+    color: #6c726e;
+    font-size: 13px;
+}
+
+/* Reserva espacio para las futuras tarjetas. */
+.bancos-listado #bancos-lista {
+    flex: 1;
+    min-height: 180px;
+    margin-bottom: 24px;
+}
+
+/* Mensaje cuando no existen registros. */
+.bancos-vacio {
+    margin: 0;
+    padding: 22px 16px;
+    color: #6c726e;
+    background-color: #fafbf9;
+    border: 1px dashed #cfd7d1;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* Apariencia del buscador mientras está deshabilitado. */
+.bancos-campo input:disabled {
+    background-color: #f4f5f3;
+    color: #747b76;
+    cursor: not-allowed;
+}
+
+/* En ventanas medianas, el listado pasa debajo del formulario. */
+@media (max-width: 1100px) {
+    .bancos-columnas {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .bancos-listado #bancos-lista {
+        min-height: 100px;
+    }
+}
+
+/* En pantallas pequeñas, muestra un campo por fila. */
+@media (max-width: 700px) {
+    .bancos-modulo {
+        padding: 16px;
+    }
+
+    .bancos-panel {
+        padding: 18px;
+    }
+
+    .bancos-encabezado h2 {
+        font-size: 24px;
+    }
+
+    .bancos-campos {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .bancos-acciones {
+        width: 100%;
+    }
+
+    .bancos-acciones button {
+        flex: 1;
+    }
+}
+
+/* Tarjeta de una cuenta registrada. */
+.bancos-tarjeta {
+    margin-bottom: 16px;
+    padding: 16px;
+    border: 1px solid #d5dad6;
+    border-radius: 6px;
+    background-color: #ffffff;
+    overflow-wrap: anywhere;
+}
+
+.bancos-tarjeta h4 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    color: #272b28;
+}
+
+.bancos-tarjeta p {
+    margin: 0 0 14px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #6c726e;
+}
+
+/* Estado de la cuenta. */
+.bancos-estado {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #0d5743;
+    background-color: #e8f3ed;
+}
+
+.bancos-estado.bancos-estado-inactivo {
+    color: #616761;
+    background-color: #eeeeeb;
+}
+
+/* Coloca el estado y Eliminar en una misma fila. */
+.bancos-tarjeta-acciones {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Botón Eliminar de cada tarjeta. */
+.bancos-tarjeta .bancos-eliminar {
+    padding: 8px 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #b42318;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.bancos-tarjeta .bancos-eliminar:hover {
+    background-color: #fff0ee;
+}
+
+.bancos-tarjeta .bancos-eliminar:focus-visible {
+    outline: 2px solid #b42318;
+    outline-offset: 2px;
+}
+
+/* Botón Editar de las tarjetas. */
+.bancos-tarjeta .bancos-editar {
+    padding: 8px 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #0d5743;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.bancos-tarjeta .bancos-editar:hover {
+    background-color: #e8f3ed;
+}
+
+.bancos-tarjeta .bancos-editar:focus-visible {
+    outline: 2px solid #0d5743;
+    outline-offset: 2px;
+}
